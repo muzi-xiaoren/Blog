@@ -1,0 +1,37 @@
+# Fluid 主题配置 —— 覆盖 node_modules/hexo-theme-fluid/_config.yml 的默认值
+# 完整可配置项见官方文档：https://hexo.fluid-dev.com/docs/
+
+# 导航栏左侧标题
+navbar:
+  blog_title: "木子小忍"
+
+# 首页头图与标语
+index:
+  # 想换头图：把图片放到 source/img/ 下，然后写成 /img/你的文件名.jpg
+  # banner_img: /img/default.png
+  slogan:
+    enable: true
+    # 首页大字标语，可写成列表实现随机显示
+    text: "记录技术 · 分享生活"
+
+# 文章页头图
+post:
+  banner_img: /img/default.png
+
+# 关于页头图
+about:
+  banner_img: /img/default.png
+  avatar: /img/avatar.png
+  name: "木子小忍"
+  intro: "这里是个人简介，随便写点什么～"
+  # 社交图标，icon 用 Font Awesome class，link 填链接
+  icons:
+    - { class: "iconfont icon-github-fill", link: "https://github.com/muzi-xiaoren", tip: "GitHub" }
+
+# 页脚
+footer:
+  content: '
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a>
+  '
