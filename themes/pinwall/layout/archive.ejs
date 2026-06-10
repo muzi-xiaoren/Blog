@@ -1,0 +1,30 @@
+<%
+let label = '归档';
+if (is_category()) label = '分类：' + page.category;
+else if (is_tag()) label = '标签：' + page.tag;
+const groups = {};
+page.posts.sort('date', -1).each(function (p) {
+  const y = date(p.date, 'YYYY');
+  (groups[y] = groups[y] || []).push(p);
+});
+%>
+<main class="sheet-wrap">
+  <article class="sheet archive">
+    <span class="pin big-pin" aria-hidden="true"></span>
+    <h1 class="sheet-title"><%= label %></h1>
+    <% Object.keys(groups).sort(function (a, b) { return b - a; }).forEach(function (y) { %>
+      <h2 class="archive-year"><%= y %></h2>
+      <ul class="archive-list">
+        <% groups[y].forEach(function (p) { %>
+          <li><time><%= date(p.date, 'MM-DD') %></time><a href="<%- url_for(p.path) %>"><%= p.title %></a></li>
+        <% }) %>
+      </ul>
+    <% }) %>
+    <% if (page.total > 1) { %>
+    <nav class="board-pager in-sheet">
+      <% if (page.prev) { %><a class="pager-note" href="<%- url_for(page.prev_link) %>">← 上一页</a><% } %>
+      <% if (page.next) { %><a class="pager-note" href="<%- url_for(page.next_link) %>">下一页 →</a><% } %>
+    </nav>
+    <% } %>
+  </article>
+</main>

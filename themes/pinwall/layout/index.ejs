@@ -1,0 +1,79 @@
+<%
+const heroImgs = hero_images();
+const heroCfg = theme.hero || {};
+%>
+<%# ============ 首屏：3D 斜置图片画廊 ============ %>
+<section class="hero">
+  <div class="hero-panels" id="heroPanels">
+    <% if (heroImgs.length) { %>
+      <% heroImgs.forEach(function (src) { %>
+        <div class="panel"><div class="panel-img" style="background-image:url('<%- src %>')"></div></div>
+      <% }) %>
+    <% } else { %>
+      <% for (let i = 0; i < 5; i++) { %>
+        <div class="panel"><div class="panel-img panel-fallback fb-<%= i %>"></div></div>
+      <% } %>
+    <% } %>
+  </div>
+  <div class="hero-veil"></div>
+
+  <div class="hero-card">
+    <img class="hero-avatar" src="<%- url_for(heroCfg.avatar || '/img/avatar.svg') %>" alt="avatar">
+    <h1 class="hero-name"><%= heroCfg.title || config.title %></h1>
+    <p class="hero-slogan" id="heroSlogan" data-text="<%= heroCfg.subtitle || config.subtitle || '' %>"></p>
+    <div class="hero-socials">
+      <% (heroCfg.socials || []).forEach(function (s) { %>
+        <a class="social" href="<%- s.url %>" target="_blank" rel="noopener" title="<%= s.name %>" aria-label="<%= s.name %>">
+          <%- partial('_partial/icon', { name: s.icon }) %>
+        </a>
+      <% }) %>
+    </div>
+  </div>
+
+  <button class="scroll-down" id="scrollDown" aria-label="向下滚动"><span></span></button>
+</section>
+
+<%# ============ 博客区：图钉便利贴板 ============ %>
+<section class="board" id="board">
+  <div class="board-head">
+    <h2 class="board-title">📌 文章便利贴</h2>
+    <div class="board-nav">
+      <% (theme.nav || []).forEach(function (item, i) { %>
+        <a class="nav-note" style="--tilt:<%= (i % 2 ? 3.5 : -3.5) %>deg" href="<%- url_for(item.url) %>">
+          <span class="nav-note-img" style="background-image:url('<%- url_for(item.image || '/img/notes/about.svg') %>')"></span>
+          <span class="nav-note-label"><%= item.title %></span>
+        </a>
+      <% }) %>
+    </div>
+  </div>
+
+  <div class="board-field" id="boardField">
+    <% page.posts.each(function (post, i) { %>
+      <article class="note" data-i="<%= i %>"
+        <% if (post.pin_x != null) { %> data-x="<%= post.pin_x %>"<% } %>
+        <% if (post.pin_y != null) { %> data-y="<%= post.pin_y %>"<% } %>
+        <% if (post.rotate != null) { %> data-rot="<%= post.rotate %>"<% } %>
+        <% if (post.color) { %> style="--paper:<%= post.color %>"<% } %>>
+        <a class="note-link" href="<%- url_for(post.path) %>">
+          <span class="pin" aria-hidden="true"></span>
+          <div class="note-water">
+            <% if (post.cover) { %>
+              <div class="note-cover" style="background-image:url('<%- url_for(post.cover) %>')"></div>
+            <% } %>
+            <h3 class="note-title"><%= post.title || '(无题)' %></h3>
+            <time class="note-date"><%= date(post.date, 'YYYY-MM-DD') %></time>
+            <p class="note-excerpt"><%= truncate(strip_html(post.excerpt || post.content || ''), { length: 64 }) %></p>
+          </div>
+        </a>
+      </article>
+    <% }) %>
+  </div>
+
+  <% if (page.total > 1) { %>
+  <nav class="board-pager">
+    <% if (page.prev) { %><a class="pager-note" href="<%- url_for(page.prev_link) %>">← 上一页</a><% } %>
+    <span class="pager-info"><%= page.current %> / <%= page.total %></span>
+    <% if (page.next) { %><a class="pager-note" href="<%- url_for(page.next_link) %>">下一页 →</a><% } %>
+  </nav>
+  <% } %>
+</section>

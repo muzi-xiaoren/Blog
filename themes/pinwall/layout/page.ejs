@@ -1,0 +1,23 @@
+<main class="sheet-wrap">
+  <article class="sheet page">
+    <span class="pin big-pin" aria-hidden="true"></span>
+    <% if (page.type === 'tags') { %>
+      <h1 class="sheet-title"><%= page.title || '标签' %></h1>
+      <div class="cloud">
+        <% site.tags.sort('name').each(function (t) { %>
+          <a class="tag-chip" href="<%- url_for(t.path) %>"># <%= t.name %> <small>(<%= t.posts.length %>)</small></a>
+        <% }) %>
+      </div>
+    <% } else if (page.type === 'categories') { %>
+      <h1 class="sheet-title"><%= page.title || '分类' %></h1>
+      <ul class="cat-list">
+        <% site.categories.sort('name').each(function (c) { %>
+          <li><a href="<%- url_for(c.path) %>"><%= c.name %></a> <small>（<%= c.posts.length %> 篇）</small></li>
+        <% }) %>
+      </ul>
+    <% } else { %>
+      <h1 class="sheet-title"><%= page.title %></h1>
+      <div class="sheet-content"><%- page.content %></div>
+    <% } %>
+  </article>
+</main>

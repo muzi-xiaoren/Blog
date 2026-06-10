@@ -1,7 +1,8 @@
 # Blog —— Hexo 博客源码
 
 本仓库存放 **博客源码**（Markdown 文章 + 配置 + 主题设置）。
-基于 [Hexo](https://hexo.io/) + [Fluid 主题](https://github.com/fluid-dev/hexo-theme-fluid)。
+基于 [Hexo](https://hexo.io/) + 自制 **Pinwall 主题**（`themes/pinwall/`）：
+首页为 3D 斜置图片画廊（鼠标靠近平铺 + 水波纹），博客区为软木板图钉便利贴。
 
 ## 两个仓库的关系
 
@@ -48,5 +49,18 @@ npm install               # 重新装依赖（node_modules 不在仓库里，需
 ## 常改的配置
 
 - 站点标题 / 作者 / 语言 → `_config.yml`
-- 头图 / 头像 / 社交链接 / 个人简介 → `_config.fluid.yml`
-- 图片资源放 `source/img/`
+- 头像 / 社交链接 / 右上角便利贴导航 → `_config.pinwall.yml`
+- 首页画廊图片 → 丢进 `source/img/background/`，重新生成即可
+- 其他图片资源放 `source/img/`
+
+## 便利贴文章字段（front-matter 可选）
+
+```yaml
+cover: /img/xxx.jpg   # 便利贴封面图
+pin_x: 60             # 手动定位：距板左侧百分比（0-100）
+pin_y: 80             # 手动定位：距板顶部像素
+rotate: -3            # 固定旋转角度，不写则随机微倾
+color: "#ffd9e8"      # 纸色，不写则自动轮换
+```
+
+> 旧的 Fluid 主题仍保留在依赖里，`_config.fluid.yml` 未删；想换回去把 `_config.yml` 的 `theme:` 改回 `fluid` 即可。

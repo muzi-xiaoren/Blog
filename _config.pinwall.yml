@@ -1,0 +1,19 @@
+# Pinwall 主题个性化配置（覆盖 themes/pinwall/_config.yml 的默认值）
+
+# ===== 首页信息卡 =====
+hero:
+  title: 木子小忍
+  subtitle: 记录技术 · 分享生活
+  avatar: /img/avatar.svg        # 换头像：图片放到 source/img/ 下，改这里的路径
+  socials:                       # 自由增删；icon 可选：github / bilibili / bangumi / link
+    - { name: GitHub,   url: "https://github.com/muzi-xiaoren", icon: github }
+    - { name: 哔哩哔哩,  url: "https://www.bilibili.com",        icon: bilibili }   # TODO 换成你的空间地址
+    - { name: Bangumi,  url: "https://bgm.tv",                  icon: bangumi }    # TODO 换成你的主页地址
+
+# ===== 右上角便利贴导航（内页顶栏同步使用）=====
+# 以后要加新页面，在这里加一行即可；image 等你给我图之后替换
+nav:
+  - { title: 归档, url: /archives/,   image: /img/notes/archive.svg }
+  - { title: 分类, url: /categories/, image: /img/notes/category.svg }
+  - { title: 标签, url: /tags/,       image: /img/notes/tag.svg }
+  - { title: 关于, url: /about/,      image: /img/notes/about.svg }

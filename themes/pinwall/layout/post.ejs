@@ -1,0 +1,27 @@
+<main class="sheet-wrap">
+  <article class="sheet post">
+    <span class="pin big-pin" aria-hidden="true"></span>
+    <h1 class="sheet-title"><%= page.title %></h1>
+    <div class="sheet-meta">
+      <time><%= date(page.date, 'YYYY年MM月DD日') %></time>
+      <% if (page.categories && page.categories.length) { %>
+        <span>·</span>
+        <% page.categories.each(function (c) { %>
+          <a href="<%- url_for(c.path) %>"><%= c.name %></a>
+        <% }) %>
+      <% } %>
+    </div>
+    <div class="sheet-content"><%- page.content %></div>
+    <% if (page.tags && page.tags.length) { %>
+    <div class="sheet-tags">
+      <% page.tags.each(function (t) { %>
+        <a class="tag-chip" href="<%- url_for(t.path) %>"># <%= t.name %></a>
+      <% }) %>
+    </div>
+    <% } %>
+  </article>
+  <nav class="post-nav">
+    <% if (page.prev) { %><a class="pager-note" href="<%- url_for(page.prev.path) %>">← <%= page.prev.title %></a><% } else { %><span></span><% } %>
+    <% if (page.next) { %><a class="pager-note" href="<%- url_for(page.next.path) %>"><%= page.next.title %> →</a><% } %>
+  </nav>
+</main>

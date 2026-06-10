@@ -1,0 +1,17 @@
+# Pinwall 主题默认配置
+# 在站点根目录创建 _config.pinwall.yml 覆盖这里的任意配置项
+
+# 首页（hero 区）：头像 / 名称 / 副标语 / 社交链接
+hero:
+  title:            # 为空则使用站点 _config.yml 的 title
+  subtitle:         # 为空则使用站点 _config.yml 的 subtitle
+  avatar: /img/avatar.svg
+  socials:
+    - { name: GitHub, url: "https://github.com", icon: github }
+
+# 便利贴导航（同时用于博客区右上角 + 内页顶栏），可随时增删
+nav:
+  - { title: 归档, url: /archives/,   image: /img/notes/archive.svg }
+  - { title: 分类, url: /categories/, image: /img/notes/category.svg }
+  - { title: 标签, url: /tags/,       image: /img/notes/tag.svg }
+  - { title: 关于, url: /about/,      image: /img/notes/about.svg }
