@@ -52,6 +52,17 @@
     var panels = Array.prototype.slice.call(panelsBox.querySelectorAll('.panel'));
     var activeIdx = -1;
 
+    // 预读每张图的宽高比，展开宽度按比例计算，保证整图可见
+    var aspects = panels.map(function () { return null; });
+    panels.forEach(function (p, i) {
+      var style = p.querySelector('.panel-img').getAttribute('style') || '';
+      var m = style.match(/url\(['"]?(.+?)['"]?\)/);
+      if (!m) return;
+      var im = new Image();
+      im.onload = function () { aspects[i] = im.naturalWidth / im.naturalHeight; };
+      im.src = m[1];
+    });
+
     var nearest = function (clientX) {
       var best = -1;
       var bestD = Infinity;
@@ -66,13 +77,24 @@
     var activate = function (i) {
       if (i === activeIdx) return;
       if (activeIdx >= 0) {
-        panels[activeIdx].classList.remove('active');
-        rippleOff(panels[activeIdx].querySelector('.panel-img'));
+        var prev = panels[activeIdx];
+        prev.classList.remove('active');
+        prev.style.flexGrow = '';
+        rippleOff(prev.querySelector('.panel-img'));
       }
       activeIdx = i;
       if (i >= 0) {
-        panels[i].classList.add('active');
-        rippleOn(panels[i].querySelector('.panel-img'));
+        var p = panels[i];
+        p.classList.add('active');
+        if (aspects[i]) {
+          // 目标宽度 = 面板高 × 图片宽高比（封顶 68% 容器宽），换算成 flex-grow
+          var H = p.offsetHeight;
+          var W = panelsBox.clientWidth;
+          var want = Math.min(H * aspects[i], W * 0.68);
+          var g = (panels.length - 1) * want / Math.max(W - want, 1);
+          p.style.flexGrow = Math.min(Math.max(g, 1.8), 7).toFixed(2);
+        }
+        rippleOn(p.querySelector('.panel-img'));
       }
     };
 

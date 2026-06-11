@@ -70,26 +70,29 @@ a { -webkit-tap-highlight-color: transparent; }
 
 .hero-panels {
   position: absolute;
-  inset: -7% -5%;
+  inset: -7% -8%;
   display: flex;
-  perspective: 1100px;
 }
 
+/* 每块面板独立 perspective：投影形状完全一致，缝隙均匀；
+   负 margin 让相邻面板轻微重叠，彻底不露底色 */
 .panel {
   flex: 1;
   min-width: 0;
   position: relative;
-  transform: rotateY(35deg);
+  margin-right: -3.2%;
+  transform: perspective(1100px) rotateY(35deg);
   filter: brightness(0.55) saturate(0.85);
   transition: flex 0.75s cubic-bezier(0.22, 0.8, 0.3, 1),
     transform 0.75s cubic-bezier(0.22, 0.8, 0.3, 1), filter 0.75s ease;
   will-change: flex-grow, transform;
 }
+.panel:last-child { margin-right: 0; }
 
 /* 激活：完全摆正 + 弹性展开（邻居自动压缩），并越过暗角蒙版恢复原色 */
 .panel.active {
   flex: 3.6;
-  transform: rotateY(0deg);
+  transform: perspective(1100px) rotateY(0deg);
   filter: brightness(1) saturate(1.05);
   z-index: 8;
 }
@@ -97,10 +100,37 @@ a { -webkit-tap-highlight-color: transparent; }
 .panel-img {
   position: absolute;
   inset: 0;
+  overflow: hidden;
   background-size: cover;
   background-position: center;
   box-shadow: 0 0 50px rgba(0, 0, 0, 0.55);
 }
+
+/* 展开时的两层叠加：模糊填充打底 + 完整原图（contain）盖在上面，
+   保证任意宽高比的图片展开后都能看到全貌 */
+.panel-img::before,
+.panel-img::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: inherit;
+  opacity: 0;
+  transition: opacity 0.75s ease;
+  pointer-events: none;
+}
+.panel-img::before {
+  background-size: cover;
+  background-position: center;
+  filter: blur(22px) brightness(0.8);
+  transform: scale(1.2);
+}
+.panel-img::after {
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.panel.active .panel-img::before,
+.panel.active .panel-img::after { opacity: 1; }
 
 /* 平铺后的缓慢晃动（作用于内层，避免与外层翻转 transform 冲突） */
 .panel.active .panel-img {
