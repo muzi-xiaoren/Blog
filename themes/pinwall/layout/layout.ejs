@@ -7,7 +7,7 @@
   <meta name="description" content="<%= page.description || config.description || '' %>">
   <link rel="stylesheet" href="<%- url_for('/css/main.css') %>">
 </head>
-<body class="<%= is_home() ? 'is-home' : 'is-sub' %>">
+<body class="<%= is_home() ? 'is-home' : 'is-sub' %> bs-<%= theme.board_style || 'dark' %>">
 
   <%# 全局水波纹 SVG 滤镜：JS 动态驱动 baseFrequency 与 scale 实现波动 %>
   <svg class="svg-defs" width="0" height="0" aria-hidden="true" focusable="false">

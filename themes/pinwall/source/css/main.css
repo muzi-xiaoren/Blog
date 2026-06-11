@@ -6,9 +6,40 @@
 :root {
   --ink: #3a3226;            /* 正文墨色 */
   --paper: #fff8b8;          /* 默认便利贴纸色 */
-  --cork: #a87a4f;           /* 软木板底色 */
-  --wood: #6d4c2f;           /* 木质边框 */
-  --cream: #fdf6e3;          /* 板上浅色文字 */
+}
+
+/* ===== 板面/页面底色方案（body 上的 bs-* 类由 board_style 配置生成）===== */
+body.bs-dark {
+  --bd-backdrop: #1d232d;
+  --bd-text: #d8dee9;
+  --bd-topbar: rgba(17, 21, 28, 0.86);
+  --bd-topbar-text: #e6ebf2;
+  --bd-footer: #14181f;
+  --bd-footer-text: rgba(216, 222, 233, 0.7);
+}
+body.bs-paper {
+  --bd-backdrop: #efe8d8;
+  --bd-text: #5a5244;
+  --bd-topbar: rgba(246, 241, 229, 0.92);
+  --bd-topbar-text: #4a4336;
+  --bd-footer: #e2d8c2;
+  --bd-footer-text: rgba(74, 67, 54, 0.75);
+}
+body.bs-felt {
+  --bd-backdrop: #3b525e;
+  --bd-text: #e3ecf0;
+  --bd-topbar: rgba(40, 56, 64, 0.88);
+  --bd-topbar-text: #e3ecf0;
+  --bd-footer: #243239;
+  --bd-footer-text: rgba(227, 236, 240, 0.7);
+}
+body.bs-cork {
+  --bd-backdrop: #9c714a;
+  --bd-text: #fdf6e3;
+  --bd-topbar: rgba(43, 28, 14, 0.85);
+  --bd-topbar-text: #fdf6e3;
+  --bd-footer: #2b1c0e;
+  --bd-footer-text: rgba(253, 246, 227, 0.75);
 }
 
 * { box-sizing: border-box; }
@@ -20,7 +51,7 @@ body {
   color: var(--ink);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
     "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
-  background: var(--cork);
+  background: var(--bd-backdrop);
 }
 
 .svg-defs { position: absolute; }
@@ -48,18 +79,19 @@ a { -webkit-tap-highlight-color: transparent; }
   flex: 1;
   min-width: 0;
   position: relative;
-  margin-right: -3.5%;
-  transform: rotateY(38deg);
+  transform: rotateY(35deg);
   filter: brightness(0.55) saturate(0.85);
-  transition: transform 0.75s cubic-bezier(0.22, 0.8, 0.3, 1), filter 0.75s ease;
-  will-change: transform;
+  transition: flex 0.75s cubic-bezier(0.22, 0.8, 0.3, 1),
+    transform 0.75s cubic-bezier(0.22, 0.8, 0.3, 1), filter 0.75s ease;
+  will-change: flex-grow, transform;
 }
-.panel:last-child { margin-right: 0; }
 
+/* 激活：完全摆正 + 弹性展开（邻居自动压缩），并越过暗角蒙版恢复原色 */
 .panel.active {
-  transform: rotateY(0deg) scale(1.05);
+  flex: 3.6;
+  transform: rotateY(0deg);
   filter: brightness(1) saturate(1.05);
-  z-index: 6;
+  z-index: 8;
 }
 
 .panel-img {
@@ -199,7 +231,52 @@ a { -webkit-tap-highlight-color: transparent; }
   position: relative;
   padding: 64px 5vw 90px;
   min-height: 60vh;
-  background-color: var(--cork);
+}
+
+/* —— 方案 dark：深夜钉板（默认）—— */
+.bs-dark .board {
+  background-color: #232a36;
+  background-image:
+    radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1.5px),
+    radial-gradient(rgba(0, 0, 0, 0.3) 1px, transparent 1.5px),
+    linear-gradient(165deg, rgba(255, 255, 255, 0.04), rgba(0, 0, 0, 0.25));
+  background-size: 18px 18px, 18px 18px, 100% 100%;
+  background-position: 0 0, 9px 9px, 0 0;
+  box-shadow:
+    inset 0 0 0 10px #151a23,
+    inset 0 0 0 12px #2e3849,
+    inset 0 18px 46px rgba(0, 0, 0, 0.55);
+}
+
+/* —— 方案 paper：米白方格纸 —— */
+.bs-paper .board {
+  background-color: #f6f1e5;
+  background-image:
+    linear-gradient(rgba(125, 135, 150, 0.14) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(125, 135, 150, 0.14) 1px, transparent 1px);
+  background-size: 28px 28px;
+  box-shadow:
+    inset 0 0 0 10px #e3d9c2,
+    inset 0 0 70px rgba(140, 120, 80, 0.16);
+}
+
+/* —— 方案 felt：蓝灰毛毡 —— */
+.bs-felt .board {
+  background-color: #46606e;
+  background-image:
+    radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1.4px),
+    radial-gradient(rgba(0, 0, 0, 0.18) 1px, transparent 1.4px),
+    linear-gradient(150deg, rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.18));
+  background-size: 14px 14px, 14px 14px, 100% 100%;
+  background-position: 0 0, 7px 7px, 0 0;
+  box-shadow:
+    inset 0 0 0 10px #32464f,
+    inset 0 18px 46px rgba(0, 0, 0, 0.4);
+}
+
+/* —— 方案 cork：经典软木板 —— */
+.bs-cork .board {
+  background-color: #a87a4f;
   background-image:
     radial-gradient(rgba(255, 243, 224, 0.07) 1.2px, transparent 1.7px),
     radial-gradient(rgba(61, 38, 16, 0.16) 1.2px, transparent 1.7px),
@@ -207,25 +284,18 @@ a { -webkit-tap-highlight-color: transparent; }
   background-size: 16px 16px, 16px 16px, 100% 100%;
   background-position: 0 0, 8px 8px, 0 0;
   box-shadow:
-    inset 0 0 0 12px var(--wood),
+    inset 0 0 0 12px #6d4c2f,
     inset 0 0 0 14px #8a653f,
     inset 0 18px 46px rgba(0, 0, 0, 0.35);
 }
 
 .board-head {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: flex-start;
   flex-wrap: wrap;
   gap: 20px;
   margin-bottom: 34px;
-}
-
-.board-title {
-  margin: 6px 0 0;
-  color: var(--cream);
-  font-size: 1.5rem;
-  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
 }
 
 /* —— 右上角：半图便利贴导航（可随时在配置里加新页面） —— */
@@ -380,7 +450,7 @@ a { -webkit-tap-highlight-color: transparent; }
   z-index: 5;
 }
 .board-pager.in-sheet { margin-top: 26px; }
-.pager-info { color: var(--cream); }
+.pager-info { color: var(--bd-text); }
 
 .pager-note {
   display: inline-block;
@@ -411,11 +481,11 @@ a { -webkit-tap-highlight-color: transparent; }
   flex-wrap: wrap;
   gap: 8px;
   padding: 12px 4vw;
-  background: rgba(43, 28, 14, 0.85);
+  background: var(--bd-topbar);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
-.topbar a { color: var(--cream); text-decoration: none; }
+.topbar a { color: var(--bd-topbar-text); text-decoration: none; }
 .topbar-title { font-weight: 700; font-size: 1.05rem; }
 .topbar-nav { display: flex; gap: 18px; flex-wrap: wrap; }
 .topbar-nav a:hover { text-decoration: underline; }
@@ -542,8 +612,8 @@ figure.highlight code, .sheet-content pre code { padding: 0; background: transpa
   padding: 18px;
   text-align: center;
   font-size: 0.85rem;
-  color: rgba(253, 246, 227, 0.75);
-  background: #2b1c0e;
+  color: var(--bd-footer-text);
+  background: var(--bd-footer);
 }
 .site-footer a { color: inherit; }
 
@@ -552,7 +622,6 @@ figure.highlight code, .sheet-content pre code { padding: 0; background: transpa
 @media (max-width: 720px) {
   .hero-card { width: 86vw; padding: 1.5rem 1rem; }
   .hero-name { font-size: 1.5rem; }
-  .panel { margin-right: -8%; }
   .board { padding: 56px 6vw 70px; }
   .board-head { flex-direction: column; }
   .board-nav { justify-content: flex-start; }

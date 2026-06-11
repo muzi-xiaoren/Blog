@@ -36,7 +36,6 @@ const heroCfg = theme.hero || {};
 <%# ============ 博客区：图钉便利贴板 ============ %>
 <section class="board" id="board">
   <div class="board-head">
-    <h2 class="board-title">📌 文章便利贴</h2>
     <div class="board-nav">
       <% (theme.nav || []).forEach(function (item, i) { %>
         <a class="nav-note" style="--tilt:<%= (i % 2 ? 3.5 : -3.5) %>deg" href="<%- url_for(item.url) %>">

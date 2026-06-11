@@ -1,5 +1,8 @@
 # Pinwall 主题个性化配置（覆盖 themes/pinwall/_config.yml 的默认值）
 
+# 板面与页面底色方案，可选：dark(深夜钉板) / paper(米白方格) / felt(蓝灰毛毡) / cork(软木板)
+board_style: dark
+
 # ===== 首页信息卡 =====
 hero:
   title: 木子小忍
