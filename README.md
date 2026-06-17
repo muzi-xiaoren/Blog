@@ -10,10 +10,10 @@
 
 | 仓库 | 存什么 | 谁看 |
 |------|--------|------|
-| **muzi-xiaoren/Blog**（本仓库） | 源码：Markdown、`_config.yml`、`_config.fluid.yml` 等——**可编辑的原材料** | 自己（备份 / 版本管理 / 多设备同步） |
+| **muzi-xiaoren/Blog**（本仓库） | 源码：Markdown、`_config.yml`、`_config.pinwall.yml` 等——**可编辑的原材料** | 自己（备份 / 版本管理 / 多设备同步） |
 | **muzi-xiaoren/muzi-xiaoren.github.io** | `hexo generate` 编译出的静态 HTML——**访客看到的成品** | 所有人（https://muzi-xiaoren.github.io ） |
 
-> 写作改这里（Blog），发布后自动生成 HTML 推到 github.io。**两件事是分开的。**
+> 写作改这里（Blog），GitHub Actions 自动生成 HTML 并推到 github.io。**两件事是分开的。**
 
 ## 日常流程
 
@@ -29,15 +29,17 @@ hexo server               # 打开 http://localhost:4000 看效果
 
 ### 发布到网站
 ```bash
-./deploy.sh               # 一键：清理 → 生成 → 推到 github.io
-```
-
-### 备份源码（每次写完文章后）
-```bash
 git add -A
 git commit -m "新增文章：xxx"
-git push                  # 推到本仓库（Blog）
+git push                  # 推送后 GitHub Actions 自动构建部署
 ```
+
+> 🚀 **自动部署**：推送到 `main` 分支后，GitHub Actions 会自动：
+> 1. 安装依赖
+> 2. 执行 `hexo clean && hexo generate`
+> 3. 推送到 `muzi-xiaoren.github.io` 仓库
+> 
+> 查看部署进度：https://github.com/muzi-xiaoren/Blog/actions
 
 ## 换电脑 / 重装后怎么恢复
 
@@ -46,7 +48,26 @@ git clone git@github.com:muzi-xiaoren/Blog.git
 cd Blog
 npm install               # 重新装依赖（node_modules 不在仓库里，需重装）
 ```
-> 注意：发布用的 SSH 私钥 `~/.ssh/passman_deploy` 不在仓库里（也不该在），换电脑需自行拷贝过去。
+
+> ✅ **多设备友好**：GitHub Actions 部署无需配置 SSH 密钥，任何设备 push 后都会自动部署。
+
+## 部署配置
+
+本项目使用 **GitHub Actions** 自动部署，配置文件：[`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)
+
+### 初次设置（仅需一次）
+
+需要在 GitHub 仓库中配置 Personal Access Token：
+
+1. 生成 Token：https://github.com/settings/tokens/new
+   - **Note**: `Hexo Deploy Token`
+   - **Scopes**: 勾选 `repo`
+   
+2. 添加到仓库 Secrets：https://github.com/muzi-xiaoren/Blog/settings/secrets/actions
+   - **Name**: `DEPLOY_TOKEN`
+   - **Secret**: 粘贴生成的 token
+
+详细步骤见：[`.github/workflows/SETUP.md`](.github/workflows/SETUP.md)
 
 ## 常改的配置
 
