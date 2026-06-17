@@ -19,11 +19,11 @@ jobs:
       - name: 设置 Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'  # 使用 Node.js 18
+          node-version: '20'  # 使用 Node.js 20
           cache: 'npm'
 
       - name: 安装依赖
-        run: npm ci
+        run: npm install
 
       - name: 生成静态文件
         run: npx hexo clean && npx hexo generate
